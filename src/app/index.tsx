@@ -1,98 +1,141 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from "expo-router";
+import {
+  Alert,
+  Image,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { AppBackground } from "../components/AppBackground";
+import { appAssets } from "../theme/assets";
+import { colors } from "../theme/colors";
+import {
+  radius,
+  sizes,
+  spacing,
+} from "../theme/spacing";
+import {
+  fontSizes,
+  fontWeights,
+} from "../theme/typography";
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
+export default function WelcomeScreen() {
+  const router = useRouter();
+
+  function handleEnterFoodValley(): void {
+    Alert.alert(
+      "Welcome to Food Valley, Alejandra! ♡",
+      "A little cookbook made with love by Kemu.",
+      [
+        {
+          text: "Let's Cook!",
+          onPress: () => {
+            router.replace("/(tabs)");
+          },
+        },
+      ]
     );
   }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
 
-export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
+    <AppBackground variant="welcome">
       <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+        <View style={styles.content}>
+          <View style={styles.titleContainer}>
+            <Image
+              accessibilityLabel="Food Valley"
+              resizeMode="contain"
+              source={appAssets.branding.titleLogo}
+              style={styles.titleLogo}
+            />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+            <Text style={styles.creator}>
+              {"by Kemu <3"}
+            </Text>
+          </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
+          <View style={styles.buttonContainer}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={handleEnterFoodValley}
+              style={({ pressed }) => [
+                styles.button,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <Text style={styles.buttonText}>
+                Enter Food Valley
+              </Text>
+            </Pressable>
+          </View>
+        </View>
       </SafeAreaView>
-    </ThemedView>
+    </AppBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
   safeArea: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+
+  content: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    alignItems: "center",
+    paddingHorizontal: spacing.screenHorizontal,
   },
-  title: {
-    textAlign: 'center',
+
+  titleContainer: {
+    position: "absolute",
+    top: "18%",
+    right: spacing.screenHorizontal,
+    left: spacing.screenHorizontal,
+    alignItems: "center",
   },
-  code: {
-    textTransform: 'uppercase',
+
+  titleLogo: {
+    width: "100%",
+    height: 210,
+    transform: [{ scale: 1.20 }],
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  creator: {
+    marginTop: -20,
+    color: colors.textPrimary,
+    fontSize: fontSizes.subtitle,
+    fontWeight: fontWeights.semibold,
+    textAlign: "center",
+  },
+
+  buttonContainer: {
+    position: "absolute",
+    top: "52%",
+    right: spacing.screenHorizontal,
+    left: spacing.screenHorizontal,
+  },
+
+  button: {
+    width: "100%",
+    height: sizes.buttonHeight,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: colors.primaryDark,
+    borderRadius: radius.lg,
+    backgroundColor: colors.primary,
+  },
+
+  buttonPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
+  },
+
+  buttonText: {
+    color: colors.textOnPrimary,
+    fontSize: fontSizes.button,
+    fontWeight: fontWeights.bold,
   },
 });

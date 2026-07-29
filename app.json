@@ -1,18 +1,19 @@
 {
   "expo": {
-    "name": "Kitchen-Helper-Project",
+    "name": "Food Valley",
     "slug": "food-valley",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "kitchenhelperproject",
+    "scheme": "foodvalley",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/images/icon.png",
+      "bundleIdentifier": "com.kemuelcubero.foodvalley"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#F6E3B5",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -28,12 +29,27 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#F6E3B5",
+          "image": "./assets/images/branding/title-logo.png",
+          "imageWidth": 280,
+          "resizeMode": "contain"
         }
       ],
-      "expo-audio",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Food Valley uses your photo library so you can add a finished-dish photo to a completed recipe.",
+          "cameraPermission": "Food Valley uses your camera so you can take a finished-dish photo for a completed recipe.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
       "expo-asset",
       "expo-font"
     ],
